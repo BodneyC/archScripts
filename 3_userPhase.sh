@@ -106,3 +106,7 @@ cd ~/gitclones
 git clone https://aur.archlinux.org/alacritty-git.git
 cd alacritty-git
 makepkg -isr
+
+# FZF
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install

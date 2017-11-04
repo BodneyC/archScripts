@@ -100,3 +100,9 @@ do
         * ) echo "[y/n] please";;
     esac
 done
+
+# Alacritty
+cd ~/gitclones
+git clone https://aur.archlinux.org/alacritty-git.git
+cd alacritty-git
+makepkg -isr

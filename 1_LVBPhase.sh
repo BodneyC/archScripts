@@ -15,7 +15,7 @@
 fdisk -l
 read -p "Installation drive: /dev/" instDrive
 # Username
-read -p "Username: " USERNAME
+read -p "Hostname: " HOSTNAME
 
 # Check internet connection
 ping -c 3 google.co.uk
@@ -69,8 +69,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt /bin/bash -c "sed -i 's/#en_GB.UTF-8/en_GB.UTF-8/g' /ect/locale.gen"
 arch-chroot /mnt /bin/bash -c "locale-gen"
 arch-chroot /mnt /bin/bash -c "echo LANG=en_GB.UTF-8 > /etc/locale.conf"
-arch-chroot /mnt /bin/bash -c "export LANG=en_GB.UTF-8"
-arch-chroot /mnt /bin/bash -c "echo KEYMAP=uk >> /etc/vconsole.conf"
+arch-chroot /mnt /bin/bash -c "echo export KEYMAP=uk >> /etc/vconsole.conf"
 
 # TimeZone
 arch-chroot /mnt /bin/bash -c "echo Europe/London >> /etc/timezone"
@@ -81,15 +80,15 @@ arch-chroot /mnt /bin/bash -c "echo \"FallbackNTP=0.pool.ntp.org 1.pool.ntp.org 
 arch-chroot /mnt /bin/bash -c "hwclock --systohc --utc"
 
 # Additional tools
-arch-chroot /mnt /bin/bash -c "pacman -S --noconfirm dialog wpa_suppliant wireless_tools grub os-prober iw sudo bash-completion python gvim git rofi p7zip wget unzip neovim"
+arch-chroot /mnt /bin/bash -c "pacman -S --noconfirm dialog wpa_suppliant wireless_tools grub os-prober iw sudo bash-completion python gvim git rofi p7zip wget unzip vim neovim networkmanager network-manager-applet reflector"
 
 # Boot Loader
 arch-chroot /mnt /bin/bash -c "grub-install /dev/${instDrive}"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 
 # Host Info
-arch-chroot /mnt /bin/bash -c "echo $USERNAME > /etc/hostname"
-arch-chroot /mnt /bin/bash -c "printf "Enter root passwd\n""
+arch-chroot /mnt /bin/bash -c "echo $HOSTNAME > /etc/hostname"
+arch-chroot /mnt /bin/bash -c "echo Enter root passwd\n"
 arch-chroot /mnt /bin/bash -c "passwd --stdin)"
 
 #############################################################################

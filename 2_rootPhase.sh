@@ -15,21 +15,24 @@ localectl set-keymap --no-convert uk
 loadkeys gb
 
 # Wireless
-		ip link ### Get device name
-		systemctl stop dhcpcd@<device-name>.service
-		wifi-menu -o <device-name> { 		### NEEDS AUTOMATING
-			follow on-screen instr
-		}
-		if netctl start <profile>; then
-			netctl enable <profile>
-		else
-			netctl status <profile>
-		fi
+#ip link ### Get device name
+#systemctl stop dhcpcd@<device-name>.service
+#wifi-menu -o <device-name> { 		### NEEDS AUTOMATING
+#	follow on-screen instr
+#}
+#if netctl start <profile>; then
+#	netctl enable <profile>
+#else
+#	netctl status <profile>
+#fi
+systemctl start NetworkManager.service
+systemctl enable NetworkManager.service
 
 ### Check connection
 ping -c 3 google.co.uk
 rc=$?
 if [[ $rc -ne 0 ]]; then
+    echo Web connection required
 	exit 1
 fi
 

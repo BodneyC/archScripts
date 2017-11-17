@@ -37,6 +37,8 @@ if [[ $rc -ne 0 ]]; then
 fi
 
 # User control
+echo "Username: "
+read USERNAME
 useradd -m -G wheel,users -s /bin/bash $USERNAME
 echo -e "a\na" | (passwd --stdin ${USERNAME})
 sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
@@ -48,39 +50,45 @@ pacman -Sy # update repos
 
 #Install X and ting
 printf "1) Nvidia (Nouveau)\n2) AMD\n3) VirtualBox\n4) Intel\n0) None"
-read choiceVar
 
-if [[ $choiceVar -ne 0 ]]; then
+while true
+do
+    read choiceVar
+
+    case $choiceVar in
+        1)
+            pacman -S --noconfirm xf86-video-nouveau mesa-libgl libvdpau-va-gl; break;;
+        2)
+            pacman -S  --noconfirm xf86-video-ati mesa-libgl mesa-vdpau libvdpau-va-gl; break;;
+        3)
+            pacman -S --noconfirm virtualbox-guest-{dkms,iso,modules,dkms,utils} lib32-mesa;
+            system_ctl disable ntpd;
+            system_ctl enable vboxservice; break;;
+        4)
+            pacman -S --no-confirm xf86-video-intel lib32-mesa; break;;
+        *)
+            echo "Incorrect choice, [0-4] please";;
+    esac
+done
+
+if [[ $choiceVar -eq [1-4] ]]; then
 	pacman -S --noconfirm xorg-server xorg-apps xorg-server-xwayland xorg-xinit xorg-xkill xorg-xinput xf86-input-libinput mesa
 fi
 
-if [[ $choiceVar -eq 1 ]]; then
-    pacman -S --noconfirm xf86-video-nouveau mesa-libgl libvdpau-va-gl
-elif [[ $choiceVar -eq 2 ]]; then
-	pacman -S  --noconfirm xf86-video-ati mesa-libgl mesa-vdpau libvdpau-va-gl
-elif [[ $choiceVar -eq 3 ]]; then
-	pacman -S --noconfirm virtualbox-guest-{dkms,iso,modules,dkms,utils} lib32-mesa
-    system_ctl disable ntpd
-    system_ctl enable vboxservice
-elif [[ $choiceVar -eq 4 ]]; then
-	pacman -S --no-confirm xf86-video-intel lib32-mesa
-elif [[ $choiceVar -eq 0 ]]; then
-
-else
-	echo "Incorrect choice, ending script"
-	exit 1
-fi
-
+# Laptop?
 printf "1) Laptop\n2) Other"
-read lapChoice
-if [[ $lapChoice -eq 1 ]]; then
-	pacman -S --noconfirm libinput
-elif [[ $lapChoice -eq 2 ]]; then
-	break
-else
-	echo "Incorrect choice, ending script"
-	exit 1
-fi
+
+while true
+do
+    read lapChoice
+
+    case $lapChoice in
+    1)
+        pacman -S --noconfirm libinput; break;;
+    *)
+	    echo "Incorrect choice, [1-1]..."; break;;
+    esac
+done
 
 # Audio configuration
 pacman -S --noconfirm alsa-utils pulseaudio

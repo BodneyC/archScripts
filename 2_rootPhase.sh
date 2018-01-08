@@ -57,15 +57,19 @@ do
 
     case $choiceVar in
         1)
-            pacman -S --noconfirm xf86-video-nouveau mesa-libgl libvdpau-va-gl; break;;
+            pacman -S --noconfirm xf86-video-nouveau mesa-libgl libvdpau-va-gl; 
+            break;;
         2)
-            pacman -S  --noconfirm xf86-video-ati mesa-libgl mesa-vdpau libvdpau-va-gl; break;;
+            pacman -S  --noconfirm xf86-video-ati mesa-libgl mesa-vdpau libvdpau-va-gl; 
+            break;;
         3)
             pacman -S --noconfirm virtualbox-guest-{dkms,iso,modules,dkms,utils} lib32-mesa;
             system_ctl disable ntpd;
-            system_ctl enable vboxservice; break;;
+            system_ctl enable vboxservice; 
+            break;;
         4)
-            pacman -S --no-confirm xf86-video-intel lib32-mesa; break;;
+            pacman -S --no-confirm xf86-video-intel lib32-mesa; 
+            break;;
         *)
             echo "Incorrect choice, [0-4] please";;
     esac

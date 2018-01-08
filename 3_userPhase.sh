@@ -21,7 +21,7 @@ git clone https://github.com/BodneyC/vim-neovim-config.git
 # Dotfiles
 cd dotfiles
 cp -r -t ~/ ./{.bashrc,.bash_aliases,.Xresources,.xinitrc,.bash_profile,multiplexing/{.tmux.conf,.tmux,.screenrc}} 
-sed -i "/s/e\/\/D/e\/${USERNAME}\/D" profile
+sed -i "s/e\/\/D/e\/${USERNAME}\/D" profile
 cp profile /etc/profile
 cp local.conf /etc/fonts/
     # TMUX
@@ -87,8 +87,8 @@ echo "[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.fr/\$arch"
 pacman -Sy --noconfirm yaourt
 
 # Additional apps
-pacman -S atom htop firefox qbittorrent steam
-yaourt -S discord spotify dropbox
+pacman -S atom htop firefox qbittorrent steam astyle kate okular openmp openmpi openssh pandoc feh google-chrome
+yaourt -S discord spotify dropbox paman
 
 # ZSH
 while true;

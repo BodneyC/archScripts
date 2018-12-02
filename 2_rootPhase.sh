@@ -36,15 +36,8 @@ if [[ $rc -ne 0 ]]; then
 	exit 1
 fi
 
-# User control
-echo "Username: "
-read USERNAME
-useradd -m -G wheel,users -s /bin/bash $USERNAME
-echo -e "a\na" | (passwd --stdin ${USERNAME})
-sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers
-
 # Configure repos
-sed -i 's/#\[multilib\]/\[multilib\]/' /etc/pacman.conf
+sed -i 's/#\(\[multilib\]\)/\1/' /etc/pacman.conf
 sed -i '/\[multilib\]/{n;s/^#//}' /etc/pacman.conf
 pacman -Sy # update repos
 
@@ -63,9 +56,10 @@ do
             pacman -S  --noconfirm xf86-video-ati mesa-libgl mesa-vdpau libvdpau-va-gl; 
             break;;
         3)
-            pacman -S --noconfirm virtualbox-guest-{dkms,iso,modules,dkms,utils} lib32-mesa;
-            system_ctl disable ntpd;
-            system_ctl enable vboxservice; 
+            pacman -S --noconfirm virtualbox-guest-{iso,modules-arch,utils} lib32-mesa;
+            systemctl disable ntpd;
+            systemctl enable vboxservice; 
+            systemctl start vboxservice; 
             break;;
         4)
             pacman -S --no-confirm xf86-video-intel lib32-mesa; 
@@ -76,7 +70,7 @@ do
 done
 
 if [[ $choiceVar -eq [1-4] ]]; then
-	pacman -S --noconfirm xorg-server xorg-apps xorg-server-xwayland xorg-xinit xorg-xkill xorg-xinput xf86-input-libinput mesa
+	pacman -S --noconfirm xorg-server xorg-apps xorg-xinit xf86-input-libinput mesa
 fi
 
 # Laptop?
@@ -89,8 +83,10 @@ do
     case $lapChoice in
     1)
         pacman -S --noconfirm libinput; break;;
+    2)
+	echo Continuing...
     *)
-	    echo "Incorrect choice, [1-1]..."; break;;
+	echo "Incorrect choice, [1-1]..."; 
     esac
 done
 
@@ -103,7 +99,7 @@ amixer sset Master unmute
 # systemctl enable alsa-state.service
 
 # XFCE4 installation
-pacman -S --noconfirm xfce4 xfce4-goodies
+pacman -S --noconfirm gnome
 
 #############################################################################
 #-------------------Reboot and login as ${USERNAME}:a-----------------------#

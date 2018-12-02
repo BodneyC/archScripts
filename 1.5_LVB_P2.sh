@@ -9,7 +9,7 @@
 #############################################################################
 
 # Locale Config
-sed -i 's/#en_GB.UTF-8/en_GB.UTF-8/g' /et/locale.gen
+sed -i 's/#en_GB.UTF-8/en_GB.UTF-8/g' /etc/locale.gen
 locale-gen
 echo LANG=en_GB.UTF-8 > /etc/locale.conf
 echo export KEYMAP=uk >> /etc/vconsole.conf

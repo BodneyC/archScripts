@@ -36,7 +36,7 @@ echo Enter root passwd\n
 passwd 
 
 # User
-read "USERNAME?Username: "
+read -p "Username: " USERNAME
 useradd $USERNAME
 echo $USERNAME password: 
 passwd $USERNAME

@@ -13,7 +13,7 @@
 
 # /dev/sdx
 fdisk -l
-read "INST_DRIVE?Installation drive: /dev/"
+read -p "Installation drive: /dev/" INST_DRIVE
 
 # Check internet connection
 ping -c 3 google.co.uk
@@ -25,10 +25,10 @@ fi
 
 # Partition prep
 echo "mklabel msdos" > ./parted.txt
-read "ROOT_SZ?What percent of the disk should be /"
+read -p "What percent of the disk should be /" ROOT_SZ
 echo "mkpart primary ext4 1MiB ${ROOT_SZ}%" >> ./parted.txt
 echo "set 1 boot on" >> ./parted.txt
-read "HOME_SZ?What percent of the disk should be /home"
+read -p "What percent of the disk should be /home" HOME_SZ
 echo "mkpart primary ext4 ${ROOT_SZ}% $(($HOME_SZ + $ROOT_SZ))%" >> parted.txt
 echo "mkpart primary linux-swap $(($HOME_SZ + $ROOT_SZ))% 100%" >> parted.txt
 echo "quit" >> parted.txt
